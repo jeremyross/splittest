@@ -27,9 +27,6 @@ public class SplitTest extends CamelTestSupport {
             @Override
             public void configure() throws Exception {
                 from("scheduler:testBug?initialDelay=1000&useFixedDelay=true&delay=60000&greedy=true")
-                        .to("direct:testMulticast");
-
-                from("direct:testMulticast")
                     .setHeader("parentExchangeId", simple("${exchangeId}"))
                     .log("${header.parentExchangeId}-${date:now:yyyy-MM-dd'T'HH:mm:ss.SSS}: " +
                             "Before the processor the body must be empty : [${body}]")
