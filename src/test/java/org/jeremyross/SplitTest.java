@@ -27,14 +27,9 @@ public class SplitTest extends CamelTestSupport {
             @Override
             public void configure() throws Exception {
                 from("scheduler:testBug?initialDelay=1000&useFixedDelay=true&delay=60000&greedy=true")
-                    .setHeader("parentExchangeId", simple("${exchangeId}"))
-                    .log("${header.parentExchangeId}-${date:now:yyyy-MM-dd'T'HH:mm:ss.SSS}: " +
-                            "Before the processor the body must be empty : [${body}]")
                     .multicast().parallelProcessing()
                         .log("test")
                     .end()
-                    .log("${header.parentExchangeId}-${date:now:yyyy-MM-dd'T'HH:mm:ss.SSS}: " +
-                            "Split done: [${body}]")
 
                     // this should result in the scheduler waiting its delay period before sending
                     // another exchange
